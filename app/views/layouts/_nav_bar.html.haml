@@ -1,0 +1,19 @@
+.container
+  %nav.navbar.navbar-expand-lg.navbar-light.bg-light
+    .navbar-brand
+      = link_to "Home", :root, class: "#{'active' if current_page? :root}"
+    %button.navbar-toggler{ "aria-controls" => "navbarNav", "aria-expanded" => "false",
+      "aria-label" => "Toggle navigation", "data-target" => "#navbarNav", "data-toggle" => "collapse", type: "button" }
+      %span.navbar-toggler-icon
+    .collapse.navbar-collapse#navbarNav
+      %ul.navbar-nav.ml-auto
+        - if current_user
+          %li.nav-item{ class: ("active" if current_page? %i[new user registration]) }
+            = link_to "Edit Account", %i[edit user registration], class: "nav-link"
+          %li.nav-item{ class: ""}
+            = link_to "Sign Out", %i[destroy user session], method: :delete, class: "nav-link"
+        - else
+          %li.nav-item{ class: ("active" if current_page? %i[new user registration]) }
+            = link_to "Register", %i[new user registration], class: "nav-link"
+          %li.nav-item{ class: ("active" if current_page? %i[new user session]) }
+            = link_to "Sign In", %i[new user session], class: "nav-link"

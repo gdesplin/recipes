@@ -1,0 +1,88 @@
+inherit_mode:
+ merge:
+   - Include
+ 
+AllCops:
+ DisplayStyleGuide: true
+ DisplayCopNames: true
+ TargetRubyVersion: 2.3
+ Exclude:
+   - 'Rakefile'
+   - 'bin/*'
+   - 'config/preinitializer.rb'
+   - 'config/spring.rb'
+   - 'db/schema.rb'
+   - 'log/**/*'
+   - 'node_modules/**/*'
+   - 'public/**/*'
+   - 'tmp/**/*'
+   - 'vendor/**/*'
+ Include:
+   - '**/*.prawn'
+   - '**/*.rake'
+ 
+Layout/ParameterAlignment:
+ EnforcedStyle: with_fixed_indentation
+Layout/EmptyLineAfterGuardClause:
+ Enabled: false
+Layout/EmptyLinesAroundClassBody:
+ EnforcedStyle: empty_lines_except_namespace
+Layout/EmptyLinesAroundModuleBody:
+ EnforcedStyle: empty_lines_except_namespace
+Layout/FirstParameterIndentation:
+ EnforcedStyle: consistent
+Layout/FirstArrayElementIndentation:
+ EnforcedStyle: consistent
+Layout/FirstHashElementIndentation:
+ EnforcedStyle: consistent
+Layout/MultilineMethodCallIndentation:
+ EnforcedStyle: indented
+Layout/MultilineOperationIndentation:
+ EnforcedStyle: indented
+
+Layout:
+  Metrics/LineLength:
+    Max: 110
+  Metrics/AbcSize:
+    Enabled: false
+  Metrics/BlockNesting:
+    Max: 6
+  Metrics/BlockLength:
+    Max: 220
+  Metrics/ClassLength:
+    Enabled: false
+  Metrics/CyclomaticComplexity:
+    Enabled: false
+  Metrics/MethodLength:
+    Enabled: false
+  Metrics/ModuleLength:
+    Enabled: false
+  Metrics/PerceivedComplexity:
+    enabled: false
+
+ 
+Naming/PredicateName:
+ Enabled: false
+Naming/AccessorMethodName:
+ Enabled: false
+ 
+Style/BracesAroundHashParameters:
+ EnforcedStyle: context_dependent
+Style/ClassAndModuleChildren:
+ EnforcedStyle: compact
+Style/Documentation:
+ Enabled: false
+Style/FrozenStringLiteralComment:
+ Enabled: false
+Style/StringLiterals:
+ EnforcedStyle: double_quotes
+Style/StringLiteralsInInterpolation:
+ EnforcedStyle: double_quotes
+Style/TrailingCommaInArguments:
+ EnforcedStyleForMultiline: comma
+Style/TrailingCommaInArrayLiteral:
+ EnforcedStyleForMultiline: comma
+Style/TrailingCommaInHashLiteral:
+ EnforcedStyleForMultiline: comma
+
+

@@ -1,0 +1,7 @@
+.container
+  %h1 Recipes
+  = link_to "Create #{Recipe.model_name.human}",  %i[new recipe], class: "btn btn-primary"
+
+  %ul.mt-3
+    - @recipes.each do |recipe|
+      %li= link_to recipe.title, recipe

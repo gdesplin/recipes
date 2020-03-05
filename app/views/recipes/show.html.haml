@@ -1,0 +1,29 @@
+.container
+  .row
+    .col-md-6
+      .card
+        .card-body
+          %h5.card-title= @recipe.title
+          %h6.card-subtitle= @recipe.short_description
+          .row
+            
+            .col-6
+              %ul.list-group.list-group-flush.text-right
+                %li.list-group-item= Recipe.human_attribute_name(:servings)
+                %li.list-group-item= Recipe.human_attribute_name(:cook_time_in_minutes)
+                %li.list-group-item= Recipe.human_attribute_name(:prep_time_in_minutes)
+                %li.list-group-item= Recipe.human_attribute_name(:user)
+            .col-6
+              %ul.list-group.list-group-flush
+                %li.list-group-item= @recipe.servings
+                %li.list-group-item= @recipe.cook_time_in_minutes
+                %li.list-group-item= @recipe.prep_time_in_minutes
+                %li.list-group-item= @recipe.user.name || @recipe.user.email
+    .col-md-6
+      .card
+      .card-body
+        %h5.card-title= Recipe.human_attribute_name(:directions)
+        %p= @recipe.directions
+
+      
+

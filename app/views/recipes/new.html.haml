@@ -1,0 +1,30 @@
+.container
+  %h2.card-title= "New #{@recipe.model_name.human}"
+  = form_with model: @recipe do |f|
+    .form-group
+      = f.label :title
+      = f.text_field :title, class: "form-control"
+    .form-group
+      = f.label :short_description
+      = f.text_field :short_description, class: "form-control", max_length: 140
+    .form-group
+      = f.label :servings
+      = f.number_field :servings, class: "form-control"
+    .form-group
+      = f.label :cook_time_in_minutes
+      = f.number_field :cook_time_in_minutes, class: "form-control"
+    .form-group
+      = f.label :prep_time_in_minutes
+      = f.number_field :prep_time_in_minutes, class: "form-control"
+    .form-group
+      %button.btn.btn-primary{"data-target" => "#ingredientModel", "data-toggle" => "modal", :type => "button"} Add Ingredient
+    .form-group
+      = f.label :directions
+      = f.text_area :directions, class: "form-control"
+    .form-group
+      = f.label :private
+      = f.check_box :private, class: "form-control"
+    .form-group
+      = f.submit class: "btn btn-primary"
+
+= render partial: "ingredient_modal"
