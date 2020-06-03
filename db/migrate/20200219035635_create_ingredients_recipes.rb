@@ -6,7 +6,7 @@ class CreateIngredientsRecipes < ActiveRecord::Migration[6.0]
       t.index :ingredient_id
       t.integer :recipe_id
       t.index :recipe_id
-      t.string :measurment_type
+      t.string :measurement_type
       t.float :amount
       t.timestamps
     end

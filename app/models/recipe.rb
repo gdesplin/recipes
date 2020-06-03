@@ -10,4 +10,6 @@ class Recipe < ApplicationRecord
 
   accepts_nested_attributes_for :ingredients, :tags
 
+  attr_accessor :servings_change
+
 end

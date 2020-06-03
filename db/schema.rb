@@ -23,7 +23,6 @@ ActiveRecord::Schema.define(version: 2020_02_26_043150) do
   end
 
   create_table "ingredients_nutrients", force: :cascade do |t|
-    t.string "type"
     t.integer "food_data_central_id"
     t.decimal "amount"
     t.integer "nutrient_id"
@@ -37,7 +36,7 @@ ActiveRecord::Schema.define(version: 2020_02_26_043150) do
   create_table "ingredients_recipes", force: :cascade do |t|
     t.integer "ingredient_id"
     t.integer "recipe_id"
-    t.string "measurment_type"
+    t.string "measurement_type"
     t.float "amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

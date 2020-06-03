@@ -1,10 +1,19 @@
 class RecipesController < ApplicationController
+
   def index
     @recipes = Recipe.all
   end
 
   def show
-    @recipe = Recipe.find(params[:id])
+    @recipe = Recipe.includes(
+      ingredients_recipes: [
+        ingredient: [
+          ingredients_nutrients: [:nutrient],
+        ],
+      ],
+    )
+      .find(params[:id])
+    @recipe.servings_change = params[:servings_change]&.to_f || @recipe.servings
   end
 
   def destroy
@@ -46,7 +55,7 @@ class RecipesController < ApplicationController
     ] + [
       ingredients: %i[
         name
-        measurment_type
+        measurement_type
         amount
         food_data_central_id
       ] + [

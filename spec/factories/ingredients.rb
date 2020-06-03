@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :ingredient do
     name { "MyString" }
-    measurment_type { "" }
+    measurement_type { "" }
     amount { 1.5 }
     food_data_central_id { "" }
     kcals { 1.5 }

@@ -77,7 +77,7 @@ function addIngredientTemplate(ingredient) {
         <li class="list-group-item">${ingredient.description}</li>
         <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][name]]" value="${ingredient.description}">
         <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][food_data_central_id]]" value="${ingredient.fdcId}">
-        <li class="list-group-item">Measurment: <input type="text" name="recipe_ingredients_nutrients_form[ingredients[][measurment_type]]" placeholder="ie. 'tsp' or 'whole'"></input></li>
+        <li class="list-group-item">measurement: <input type="text" name="recipe_ingredients_nutrients_form[ingredients[][measurement_type]]" placeholder="ie. 'tsp' or 'whole'"></input></li>
         <li class="list-group-item">Amount: <input type="text" name="recipe_ingredients_nutrients_form[ingredients[][amount]]"></input></li>
   `
   console.log(ingredient);

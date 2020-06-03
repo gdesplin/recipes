@@ -40,25 +40,20 @@ class RecipeIngredientsNutrientsForm
       end
       recipe.ingredients_recipes.create!(
         ingredient: new_ingredient,
-        measurment_type: ingredient[:measurment_type],
+        measurement_type: ingredient[:measurement_type],
         amount: ingredient[:amount],
       )
     end
   end
 
   def save_nutrients(nutrients, ingredient)
-    puts "saving nutrients"
     nutrients.each do |nutrient|
-      puts "nutrient **********************"
-      puts nutrient.inspect
       new_nutrient = Nutrient.create_with(
         name: nutrient[:name],
         number: nutrient[:number],
         rank: nutrient[:rank],
         unit_name: nutrient[:unit_name],
       ).find_or_create_by(food_data_central_id: nutrient[:food_data_central_id])
-      puts "new_nutrient"
-      puts new_nutrient
       ingredient.ingredients_nutrients.create!(
         nutrient: new_nutrient,
         amount: nutrient[:amount],
