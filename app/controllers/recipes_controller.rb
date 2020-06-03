@@ -7,17 +7,23 @@ class RecipesController < ApplicationController
     @recipe = Recipe.find(params[:id])
   end
 
+  def destroy
+  end
+
   def new
-    @recipe = Recipe.new
+    @recipe_form = RecipeIngredientsNutrientsForm.new.load
   end
 
   def edit
   end
 
   def create
-    @recipe = current_user.recipes.new(safe_params)
-    if @recipe.save
-      redirect_to @recipe
+    puts "safe_params"
+    puts safe_params
+    puts "safe_params"
+    @recipe_form = RecipeIngredientsNutrientsForm.new(safe_params).load
+    if @recipe_form.save
+      redirect_to @recipe_form.recipe
     else
       render :new
     end
@@ -26,13 +32,10 @@ class RecipesController < ApplicationController
   def update
   end
 
-  def destroy
-  end
-
   private
 
   def safe_params
-    params.require(:recipe).permit(%i[
+    params.require(:recipe_ingredients_nutrients_form).permit(%i[
       title
       short_description
       servings
@@ -41,21 +44,23 @@ class RecipesController < ApplicationController
       directions
       private
     ] + [
-      ingredients_attributes: %i[
+      ingredients: %i[
         name
         measurment_type
         amount
         food_data_central_id
       ] + [
-        nutrient_attributes: %i[
+        nutrients: %i[
           food_data_central_id
           number
           name
           rank
           unit_name
+          amount
+          food_nutrient_id
         ],
       ],
-    ])
+    ]).merge(user_id: current_user.id)
   end
 
 end

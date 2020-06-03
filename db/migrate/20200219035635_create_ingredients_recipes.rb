@@ -1,9 +1,13 @@
 class CreateIngredientsRecipes < ActiveRecord::Migration[6.0]
 
   def change
-    create_join_table :ingredients, :recipes do |t|
+    create_table :ingredients_recipes do |t|
+      t.integer :ingredient_id
       t.index :ingredient_id
+      t.integer :recipe_id
       t.index :recipe_id
+      t.string :measurment_type
+      t.float :amount
       t.timestamps
     end
   end

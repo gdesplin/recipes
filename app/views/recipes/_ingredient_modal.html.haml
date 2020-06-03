@@ -2,13 +2,14 @@
   .modal-dialog{ :role => "document"}
     .modal-content
       .modal-header
-        %h5#ingredientModelLabel.modal-title= "Find & Add #{@recipe.ingredients.model_name.human}"
+        %h5#ingredientModelLabel.modal-title= "Find & Add #{@recipe_form.ingredients.model_name.human.pluralize}"
         %button.close{ "aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
           %span{ "aria-hidden" => "true" } ×
-      .modal-body{ data: { controller: "ingredients"} }
-        .form-group
-          %input{ data: { target: "ingredients.searchTerm", action: "keyup->ingredients#search"} }
-        %ul{ data: { target: "ingredients.searchResults" } }
+      .modal-body
+        = form_with data: { action: "submit->recipes#search" } do
+          .form-group
+            %input{ data: { target: "recipes.searchTerm" } }
+            = submit_tag "Search", class: "btn btn-primary"
+        %div{ data: { target: "recipes.searchResultsList" } }
       .modal-footer
         %button.btn.btn-secondary{ "data-dismiss" => "modal", :type => "button" } Close
-        %button.btn.btn-primary{ :type => "button" } Save changes

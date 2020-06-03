@@ -1,6 +1,12 @@
 .container
   %h1 Recipes
-  = link_to "Create #{Recipe.model_name.human}",  %i[new recipe], class: "btn btn-primary"
+  - if user_signed_in?
+    = link_to "Create #{Recipe.model_name.human}",  %i[new recipe], class: "btn btn-primary"
+  - else
+    %h3 Please sign in or register to create a recipe
+    = link_to "Sign In", %i[new user session], class: "btn btn-primary"
+    = link_to "Register", %i[new user registration], class: "btn btn-primary"
+
 
   %ul.mt-3
     - @recipes.each do |recipe|

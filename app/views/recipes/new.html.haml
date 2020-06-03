@@ -1,6 +1,6 @@
-.container
-  %h2.card-title= "New #{@recipe.model_name.human}"
-  = form_with model: @recipe do |f|
+.container{ data: { controller: "recipes"} }
+  %h2.card-title= "New #{@recipe_form.recipe.model_name.human}"
+  = form_with model: @recipe_form, url:  @recipe_form.recipe do |f|
     .form-group
       = f.label :title
       = f.text_field :title, class: "form-control"
@@ -17,7 +17,14 @@
       = f.label :prep_time_in_minutes
       = f.number_field :prep_time_in_minutes, class: "form-control"
     .form-group
-      %button.btn.btn-primary{"data-target" => "#ingredientModel", "data-toggle" => "modal", :type => "button"} Add Ingredient
+      %button.btn.btn-primary{"data-target" => "#ingredientModel", "data-toggle" => "modal", :type => "button"} Add #{@recipe_form.recipe.ingredients.model_name.human.pluralize}
+      .list-group{ data: { target: "recipes.ingredientsList" } }
+        - f.fields_for :ingredients do |ingredients_fields|
+          .list-group-item
+            .list-group-horizontal
+              .list-group-item= ingredients_fields.text_field :amount
+              .list-group-item= ingredients_fields.text_field :measurment_type
+              .list-group-item= ingredients_fields.text_field :name
     .form-group
       = f.label :directions
       = f.text_area :directions, class: "form-control"
@@ -27,4 +34,4 @@
     .form-group
       = f.submit class: "btn btn-primary"
 
-= render partial: "ingredient_modal"
+  = render partial: "ingredient_modal"
