@@ -41,7 +41,11 @@ export default class extends Controller {
     }
     let addedIngredientsHTML = ""
     self.targets.addedIngredients.forEach((ingredient) => {
-      addedIngredientsHTML += addIngredientTemplate(ingredient)
+      if (ingredient.dataType == "Branded") {
+        addedIngredientsHTML += addIngredientBrandedTemplate(ingredient)
+      } else {
+        addedIngredientsHTML += addIngredientSurveyTemplate(ingredient)
+      }
       self.targets.searchResults = self.targets.searchResults.filter(result => result.fdcId !== ingredient.fdcId);
       self.updateResultsList()
     })
@@ -65,22 +69,32 @@ function resultTemplate(result) {
   return `
     <div data-fdcId="${result.fdcId}" class="mb-2">
       <button class="btn btn-primary" data-action="click->recipes#addIngredient" value="${result.fdcId}">Add</button>
-      ${result.description}
+      ${[result.description, result.brandOwner].join(": ")}
     </div>
   `
 }
 
-function addIngredientTemplate(ingredient) {
+function addIngredientSurveyTemplate(ingredient) {
   let html = `
     <div class="list-group-item">
       <div class="list-group list-group-horizontal">
         <li class="list-group-item">${ingredient.description}</li>
         <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][name]]" value="${ingredient.description}">
         <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][food_data_central_id]]" value="${ingredient.fdcId}">
-        <li class="list-group-item">measurement: <input type="text" name="recipe_ingredients_nutrients_form[ingredients[][measurement_type]]" placeholder="ie. 'tsp' or 'whole'"></input></li>
-        <li class="list-group-item">Amount: <input type="text" name="recipe_ingredients_nutrients_form[ingredients[][amount]]"></input></li>
+        <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][data_type]]" value="survey">
+        <li class="list-group-item">Servings: <input type="number" name="recipe_ingredients_nutrients_form[ingredients[][servings]]"></input></li>
+        <li class="list-group-item">
+          <select name="recipe_ingredients_nutrients_form[ingredients[][measurement_and_gram_weight]]">
   `
-  console.log(ingredient);
+  ingredient.foodPortions.forEach((foodPortion) => {
+    value = {gram_weight: foodPortion.gramWeight, measurement: foodPortion.portionDescription}
+    html += `
+      <option value='${JSON.stringify(value)}'>${foodPortion.portionDescription}</option>
+    `
+  })
+  html += `
+    </select>
+  `
   ingredient.foodNutrients.forEach((foodNutrient) => {
     html += `
       <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][nutrients[][food_data_central_id]]]" value="${foodNutrient.nutrient.id}">
@@ -96,6 +110,32 @@ function addIngredientTemplate(ingredient) {
       </div>
     </div>
   `
-  console.log(html)
+  return html
+}
+
+function addIngredientBrandedTemplate(ingredient) {
+  let gram_weight_and_measurement = {gram_weight: ingredient.servingSize, measurement: ingredient.householdServingFullText}
+  let html = `
+    <div class="list-group-item">
+      <div class="list-group list-group-horizontal">
+        <li class="list-group-item">${ingredient.description}: ${ingredient.brandOwner}</li>
+        <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][name]]" value="${ingredient.description}">
+        <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][brand_owner]]" value="${ingredient.brandOwner}">
+        <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][data_type]]" value="branded">
+        <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][food_data_central_id]]" value="${ingredient.fdcId}">
+        <li class="list-group-item">Servings: <input type="number" name="recipe_ingredients_nutrients_form[ingredients[][servings]]"></input></li>
+        <li class="list-group-item">${ingredient.householdServingFullText}, grams: ${ingredient.servingSize}</li>
+        <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][measurement_and_gram_weight]]" value='${JSON.stringify(gram_weight_and_measurement)}'>
+  `
+  for (let [name, amount] of Object.entries(ingredient.labelNutrients)) {
+    html += `
+      <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][nutrients[][name]]]" value="${name}">
+      <input type="hidden" name="recipe_ingredients_nutrients_form[ingredients[][nutrients[][number]]]" value="${amount.value}">
+    `
+  }
+  html += `
+      </div>
+    </div>
+  `
   return html
 }

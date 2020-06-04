@@ -17,13 +17,13 @@
       = f.label :prep_time_in_minutes
       = f.number_field :prep_time_in_minutes, class: "form-control"
     .form-group
-      %button.btn.btn-primary{"data-target" => "#ingredientModel", "data-toggle" => "modal", :type => "button"} Add #{@recipe_form.recipe.ingredients.model_name.human.pluralize}
+      %button.btn.btn-primary.mb-3{"data-target" => "#ingredientModel", "data-toggle" => "modal", :type => "button"} Add #{@recipe_form.recipe.ingredients.model_name.human.pluralize}
       .list-group{ data: { target: "recipes.ingredientsList" } }
         - f.fields_for :ingredients do |ingredients_fields|
           .list-group-item
             .list-group-horizontal
               .list-group-item= ingredients_fields.text_field :amount
-              .list-group-item= ingredients_fields.text_field :measurement_type
+              .list-group-item= ingredients_fields.text_field :measurement
               .list-group-item= ingredients_fields.text_field :name
     .form-group
       = f.label :directions

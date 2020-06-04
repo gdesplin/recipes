@@ -27,9 +27,6 @@ class RecipesController < ApplicationController
   end
 
   def create
-    puts "safe_params"
-    puts safe_params
-    puts "safe_params"
     @recipe_form = RecipeIngredientsNutrientsForm.new(safe_params).load
     if @recipe_form.save
       redirect_to @recipe_form.recipe
@@ -55,8 +52,10 @@ class RecipesController < ApplicationController
     ] + [
       ingredients: %i[
         name
-        measurement_type
-        amount
+        measurement_and_gram_weight
+        brand_owner
+        data_type
+        servings
         food_data_central_id
       ] + [
         nutrients: %i[

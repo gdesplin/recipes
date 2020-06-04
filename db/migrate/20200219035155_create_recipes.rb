@@ -6,7 +6,7 @@ class CreateRecipes < ActiveRecord::Migration[6.0]
       t.index :user_id
       t.string :title
       t.string :short_description
-      t.float :servings
+      t.float :servings, default: 1.0, null: false
       t.integer :cook_time_in_minutes
       t.integer :prep_time_in_minutes
       t.text :directions

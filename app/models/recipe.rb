@@ -6,10 +6,20 @@ class Recipe < ApplicationRecord
   belongs_to :user
 
   validates :title, presence: true, uniqueness: true
-  validates :directions, presence: true
+  validates :directions, :servings, presence: true
 
   accepts_nested_attributes_for :ingredients, :tags
 
   attr_accessor :servings_change
+
+  def nutrients_count
+    nutrient_data = {}
+    ingredients_recipes.each do |ingredient_recipe|
+      ingredient_recipe.ingredient.ingredients_nutrients do |ingredient_nutrient|
+
+      end
+    end
+
+  end
 
 end

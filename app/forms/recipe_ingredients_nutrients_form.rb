@@ -30,19 +30,34 @@ class RecipeIngredientsNutrientsForm
   end
 
   def save
-    recipe.save!
-    ingredients.each do |ingredient|
-      new_ingredient = Ingredient.create_with(name: ingredient[:name])
-        .find_or_initialize_by(food_data_central_id: ingredient[:food_data_central_id])
-      if new_ingredient.new_record?
-        new_ingredient.save!
-        save_nutrients(ingredient[:nutrients], new_ingredient)
+    Recipe.transaction do
+      Ingredient.transaction do
+        IngredientsRecipe.transaction do
+          Nutrient.transaction do
+            IngredientsNutrient.transaction do
+              recipe.save!
+              ingredients.each do |ingredient|
+                new_ingredient = Ingredient.create_with(
+                  name: ingredient[:name],
+                  data_type: ingredient[:data_type],
+                  brand_owner: ingredient[:brand_owner],
+                ).find_or_initialize_by(food_data_central_id: ingredient[:food_data_central_id])
+                if new_ingredient.new_record?
+                  new_ingredient.save!
+                  save_nutrients(ingredient[:nutrients], new_ingredient)
+                end
+                ingredient[:measurement_and_gram_weight] = JSON.parse ingredient[:measurement_and_gram_weight]
+                recipe.ingredients_recipes.create!(
+                  ingredient: new_ingredient,
+                  measurement: ingredient[:measurement_and_gram_weight][:measurement],
+                  gram_weight: ingredient[:measurement_and_gram_weight][:gram_weight],
+                  servings: ingredient[:servings],
+                )
+              end
+            end
+          end
+        end
       end
-      recipe.ingredients_recipes.create!(
-        ingredient: new_ingredient,
-        measurement_type: ingredient[:measurement_type],
-        amount: ingredient[:amount],
-      )
     end
   end
 

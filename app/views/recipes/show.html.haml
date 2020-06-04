@@ -1,50 +1,80 @@
 .container.js-turbolinks-get-form
   .row
-    .col-md-6
+    .col-lg-6.mb-3
       .card
         .card-body
           %h3.card-title= @recipe.title
           %h6.card-subtitle= @recipe.short_description
-          .row
-            .col-6
-              %ul.list-group.list-group-flush.text-right
-                %li.list-group-item= Recipe.human_attribute_name(:servings)
-                %li.list-group-item= Recipe.human_attribute_name(:cook_time_in_minutes)
-                %li.list-group-item= Recipe.human_attribute_name(:prep_time_in_minutes)
-                %li.list-group-item= Recipe.human_attribute_name(:user)
-            .col-6
-              %ul.list-group.list-group-flush
-                %li.list-group-item
-                  = form_with method: "get" do |f|
-                    = f.text_field :servings_change, class: "form-control", value: @recipe.servings_change
-                %li.list-group-item= @recipe.cook_time_in_minutes
-                %li.list-group-item= @recipe.prep_time_in_minutes
-                %li.list-group-item= @recipe.user.name || @recipe.user.email
-    .col-md-6
+          .list-group.list-group-horizontal
+            .list-group-item.flex-fill.w-50.text-right
+              = Recipe.human_attribute_name(:servings)
+            .list-group-item.flex-fill.w-50
+              = form_with method: "get" do |f|
+                = f.text_field :servings_change, class: "form-control", value: @recipe.servings_change
+          .list-group.list-group-horizontal
+            .list-group-item.flex-fill.w-50.text-right
+              = Recipe.human_attribute_name(:cook_time_in_minutes)
+            .list-group-item.flex-fill.w-50
+              = @recipe.cook_time_in_minutes
+          .list-group.list-group-horizontal
+            .list-group-item.flex-fill.w-50.text-right
+              = Recipe.human_attribute_name(:prep_time_in_minutes)
+            .list-group-item.flex-fill.w-50
+              = @recipe.prep_time_in_minutes
+          .list-group.list-group-horizontal
+            .list-group-item.flex-fill.w-50.text-right
+              = Recipe.human_attribute_name(:user)
+            .list-group-item.flex-fill.w-50
+              = @recipe.user.name || @recipe.user.email
+                
+    .col-lg-6.mb-3
       .card
-      .card-body
-        %h5.card-title= Recipe.human_attribute_name(:directions)
-        %p= @recipe.directions
+        .card-body
+          %h5.card-title= Recipe.human_attribute_name(:directions)
+          %p= @recipe.directions
   
   .row
-    .col-md-6
+    .col-lg-6
       .card
         .card-body
           %h3.card-title= Ingredient.model_name.human.pluralize
           .row
-            .col-4
+            .col-4.border-bottom.pb-1
               Ingredient
-            .col-4
-              Amount
-            .col-4
+            .col-4.border-bottom.pb-1
+              Servings
+            .col-4.border-bottom.pb-1
               Measurement Type
           .row
             - @recipe.ingredients_recipes.each do |ingredients_recipe|
-              .col-4
+              .col-4.border-bottom.pb-1
                 = ingredients_recipe.ingredient.name
-              .col-4
-                = ingredients_recipe.amount * @recipe.servings_change
-              .col-4
-                = ingredients_recipe.measurement_type
-    
+              .col-4.border-bottom.pb-1
+                - puts "ingredients_recipe.servings"
+                - puts ingredients_recipe.servings
+                - puts  @recipe.servings_change
+                = ingredients_recipe.servings * @recipe.servings_change
+              .col-4.border-bottom.pb-1
+                = ingredients_recipe.measurement
+                
+    -# .col-lg-6
+    -#   .card
+    -#     .card-body
+    -#       %h3.card-title= Nutrient.model_name.human.pluralize
+    -#       .row
+    -#         .col-4.border-bottom.pb-1
+    -#           Nutrient
+    -#         .col-4.border-bottom.pb-1
+    -#           Servings
+    -#         .col-4.border-bottom.pb-1
+    -#           Measurement Type
+    -#       .row
+    -#         - @recipe.ingredients_recipes.each do |ingredients_recipe|
+    -#           .col-4.border-bottom.pb-1
+    -#             = ingredients_recipe.ingredient.name
+    -#           .col-4.border-bottom.pb-1
+    -#             = ingredients_recipe.servings * @recipe.servings_change
+    -#           .col-4.border-bottom.pb-1
+    -#             = ingredients_recipe.measurement
+                
 

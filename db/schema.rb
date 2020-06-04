@@ -10,21 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_26_043150) do
+ActiveRecord::Schema.define(version: 2020_06_04_172555) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "ingredients", force: :cascade do |t|
-    t.string "name"
-    t.integer "food_data_central_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
+# Could not dump table "ingredients" because of following StandardError
+#   Unknown type 'ingredient_data_type' for column 'data_type'
 
   create_table "ingredients_nutrients", force: :cascade do |t|
     t.integer "food_data_central_id"
     t.decimal "amount"
+    t.decimal "gram_weight"
     t.integer "nutrient_id"
     t.integer "ingredient_id"
     t.datetime "created_at", precision: 6, null: false
@@ -36,8 +33,9 @@ ActiveRecord::Schema.define(version: 2020_02_26_043150) do
   create_table "ingredients_recipes", force: :cascade do |t|
     t.integer "ingredient_id"
     t.integer "recipe_id"
-    t.string "measurement_type"
-    t.float "amount"
+    t.string "measurement"
+    t.float "gram_weight"
+    t.float "servings", default: 1.0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["ingredient_id"], name: "index_ingredients_recipes_on_ingredient_id"
@@ -90,7 +88,7 @@ ActiveRecord::Schema.define(version: 2020_02_26_043150) do
     t.integer "user_id"
     t.string "title"
     t.string "short_description"
-    t.float "servings"
+    t.float "servings", default: 1.0, null: false
     t.integer "cook_time_in_minutes"
     t.integer "prep_time_in_minutes"
     t.text "directions"

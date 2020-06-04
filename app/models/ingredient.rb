@@ -10,4 +10,6 @@ class Ingredient < ApplicationRecord
 
   accepts_nested_attributes_for :nutrients
 
+  enum data_type: { branded: "branded", survey: "survey", not_set: "not_set" }
+
 end
