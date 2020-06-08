@@ -40,41 +40,34 @@
           %h3.card-title= Ingredient.model_name.human.pluralize
           .row
             .col-4.border-bottom.pb-1
-              Ingredient
+              = Ingredient.model_name.human
             .col-4.border-bottom.pb-1
-              Servings
+              = IngredientsRecipe.human_attribute_name(:servings)
             .col-4.border-bottom.pb-1
-              Measurement Type
+              = IngredientsRecipe.human_attribute_name(:measurement)
           .row
             - @recipe.ingredients_recipes.each do |ingredients_recipe|
               .col-4.border-bottom.pb-1
                 = ingredients_recipe.ingredient.name
               .col-4.border-bottom.pb-1
-                - puts "ingredients_recipe.servings"
-                - puts ingredients_recipe.servings
-                - puts  @recipe.servings_change
                 = ingredients_recipe.servings * @recipe.servings_change
               .col-4.border-bottom.pb-1
                 = ingredients_recipe.measurement
                 
-    -# .col-lg-6
-    -#   .card
-    -#     .card-body
-    -#       %h3.card-title= Nutrient.model_name.human.pluralize
-    -#       .row
-    -#         .col-4.border-bottom.pb-1
-    -#           Nutrient
-    -#         .col-4.border-bottom.pb-1
-    -#           Servings
-    -#         .col-4.border-bottom.pb-1
-    -#           Measurement Type
-    -#       .row
-    -#         - @recipe.ingredients_recipes.each do |ingredients_recipe|
-    -#           .col-4.border-bottom.pb-1
-    -#             = ingredients_recipe.ingredient.name
-    -#           .col-4.border-bottom.pb-1
-    -#             = ingredients_recipe.servings * @recipe.servings_change
-    -#           .col-4.border-bottom.pb-1
-    -#             = ingredients_recipe.measurement
+    .col-lg-6
+      .card
+        .card-body
+          %h3.card-title= Nutrient.model_name.human.pluralize
+          .row
+            .col-4.border-bottom.pb-1
+              = Nutrient.model_name.human
+            .col-4.border-bottom.pb-1
+              Amount
+          .row
+            - @recipe.nutrients_data.each do |name, amount|
+              .col-6.border-bottom.pb-1
+                = name
+              .col-6.border-bottom.pb-1
+                = "#{amount[:amount]}, #{amount[:unit_name]}"
                 
 

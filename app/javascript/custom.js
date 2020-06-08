@@ -1,4 +1,5 @@
 import Turbolinks from 'turbolinks';
+import Lodash from 'lodash';
 // Fix turbolinks get forms
 document.addEventListener('turbolinks:load', function(event) {
   for (let form of document.querySelectorAll('form[method=get][data-remote=true]')) {
