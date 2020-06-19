@@ -57,17 +57,23 @@
     .col-lg-6
       .card
         .card-body
-          %h3.card-title= Nutrient.model_name.human.pluralize
+          %h3.card-title= "#{Nutrient.model_name.human.pluralize} per serving"
           .row
-            .col-4.border-bottom.pb-1
+            .col-6.border-bottom.pb-1
               = Nutrient.model_name.human
-            .col-4.border-bottom.pb-1
+            .col-6.border-bottom.pb-1
               Amount
           .row
-            - @recipe.nutrients_data.each do |name, amount|
+            - @recipe.nutrients_data(params[:show_more_nutrients]).each do |name, amount|
               .col-6.border-bottom.pb-1
                 = name
               .col-6.border-bottom.pb-1
                 = "#{amount[:amount]}, #{amount[:unit_name]}"
-                
+        - unless params[:show_more_nutrients]
+          = form_with method: "get" do |f|
+            = f.hidden_field :show_more_nutrients, class: "form-control", value: true
+            = f.submit "Show More", class: "btn btn-secondary"
+        - else
+          = form_with method: "get" do |f|
+            = f.submit "Show Less", class: "btn btn-secondary"
 

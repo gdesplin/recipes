@@ -10,7 +10,10 @@ export default class extends Controller {
   search(event) {
     event.preventDefault()
     event.stopImmediatePropagation()
-    self.searchResultsListTarget.innerHTML =`<li>Loading</li>`
+    self.searchResultsListTarget.innerHTML = 
+    `<div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>`
     fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?api_key=eiQ7AFUmqPEr6SyLF4uviQdiOhkrQZEgDrmlajbZ&query=${self.searchTermTarget.value}&pageSize=10&pageNumber=1`)
     .then(response => response.json())
     .then(json => {
