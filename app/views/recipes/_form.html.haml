@@ -1,0 +1,45 @@
+= form_with model: recipe_form, url: recipe_form.recipe do |f|
+  - recipe_form.errors.full_messages.each do |msg|
+    %li= msg
+  = f.fields_for :recipe do |r|
+    .form-group
+      = r.label :title
+      = r.text_field :title, class: "form-control"
+    .form-group
+      = r.label :short_description
+      = r.text_field :short_description, class: "form-control", max_length: 140
+    .form-group
+      = r.label :servings
+      = r.number_field :servings, step: 0.1, class: "form-control"
+    .form-group
+      = r.label :cook_time_in_minutes
+      = r.number_field :cook_time_in_minutes, step: 0.1, class: "form-control"
+    .form-group
+      = r.label :prep_time_in_minutes
+      = r.number_field :prep_time_in_minutes, step: 0.1, class: "form-control"
+    .form-groups
+      %button.btn.btn-primary.mb-3{"data-target" => "#ingredientModel", "data-toggle" => "modal", :type => "button"} Add #{recipe_form.recipe.ingredients.model_name.human.pluralize}
+      .list-group{ data: { target: "recipes.ingredientsList" } }
+      %h5 Current Ingredients
+      .list-group
+        - r.object.ingredients_recipes.each do |ingredient_recipe|
+          = r.fields_for :ingredients_recipes, ingredient_recipe do |ingredients_recipes_fields|
+            .list-group-item
+              .list-group.list-group-horizontal
+                .list-group-item.flex-fill= ingredient_recipe.ingredient.name
+                .list-group-item.flex-fill= ingredient_recipe.measurement
+                .list-group-item.flex-fill= ingredients_recipes_fields.number_field :servings, step: 0.1
+                .list-group-item.flex-fill
+                  = ingredients_recipes_fields.label :_destroy, "Remove Ingredient"
+                  = ingredients_recipes_fields.check_box :_destroy
+
+    .form-group
+      = r.label :directions
+      = r.text_area :directions, class: "form-control"
+    .form-group
+      = r.label :private
+      = r.check_box :private, class: "form-control"
+    .form-group
+      = r.submit class: "btn btn-primary"
+
+= render partial: "ingredient_modal", locals: { recipe_form: recipe_form }

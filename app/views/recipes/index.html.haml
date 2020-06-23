@@ -7,7 +7,14 @@
     = link_to "Sign In", %i[new user session], class: "btn btn-primary"
     = link_to "Register", %i[new user registration], class: "btn btn-primary"
 
-
-  %ul.mt-3
+  .row.mt-4
+    .col-12
+      %h2 Recent Recipes
     - @recipes.each do |recipe|
-      %li= link_to recipe.title, recipe
+      .col-md-3.col-md-sm-4
+        .card
+          %img.card-img-top{ src: "/Sweetie-pie-macaroni-cheese-copycat-recipe.jpg"}
+          .card-body
+            %h5.card-title= recipe.title
+            %p.card-text= recipe.short_description
+            = link_to "Show Recipe", recipe, class: "btn btn-primary"

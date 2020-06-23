@@ -15,17 +15,17 @@ class RecipeIngredientsNutrientsForm
     :private,
   )
 
+  def persisted?
+    recipe.persisted?
+  end
+
+  def recipe_attributes=(attributes)
+    self.recipe ||= Recipe.new(attributes)
+  end
+
   def load
-    self.recipe = Recipe.new(
-      title: title,
-      short_description: short_description,
-      servings: servings,
-      cook_time_in_minutes: cook_time_in_minutes,
-      prep_time_in_minutes: prep_time_in_minutes,
-      directions: directions,
-      user_id: user_id,
-    )
-    self.ingredients = ingredients || recipe.ingredients
+    self.recipe ||= Recipe.new
+    self.recipe.user_id ||= user_id
     self
   end
 
@@ -36,7 +36,7 @@ class RecipeIngredientsNutrientsForm
           Nutrient.transaction do
             IngredientsNutrient.transaction do
               recipe.save!
-              ingredients.each do |ingredient|
+              ingredients&.each do |ingredient|
                 new_ingredient = Ingredient.create_with(
                   name: ingredient[:name],
                   data_type: ingredient[:data_type],
@@ -59,6 +59,7 @@ class RecipeIngredientsNutrientsForm
         end
       end
     end
+    true
   end
 
   def save_nutrients(nutrients, ingredient)

@@ -24,6 +24,15 @@ class RecipesController < ApplicationController
   end
 
   def edit
+    recipe = Recipe.includes(
+      ingredients_recipes: [
+        ingredient: [
+          ingredients_nutrients: [:nutrient],
+        ],
+      ],
+    )
+      .find(params[:id])
+    @recipe_form = RecipeIngredientsNutrientsForm.new(recipe: recipe).load
   end
 
   def create
@@ -36,19 +45,45 @@ class RecipesController < ApplicationController
   end
 
   def update
+    recipe = Recipe.includes(
+      ingredients_recipes: [
+        ingredient: [
+          ingredients_nutrients: [:nutrient],
+        ],
+      ],
+    )
+      .find(params[:id])
+    recipe.assign_attributes(safe_params[:recipe_attributes])
+    @recipe_form = RecipeIngredientsNutrientsForm.new(recipe: recipe, ingredients: safe_params[:ingredients]).load
+    if @recipe_form.save
+      puts "saved"
+      redirect_to @recipe_form.recipe
+    else
+      puts "not saved?"
+      render :edit
+    end
   end
 
   private
 
   def safe_params
     params.require(:recipe_ingredients_nutrients_form).permit(%i[
-      title
-      short_description
-      servings
-      cook_time_in_minutes
-      prep_time_in_minutes
-      directions
-      private
+    ] + [
+      recipe_attributes: %i[
+        title
+        short_description
+        servings
+        cook_time_in_minutes
+        prep_time_in_minutes
+        directions
+        private
+      ] + [
+        ingredients_recipes_attributes: %i[
+          _destroy
+          servings
+          id
+        ],
+      ],
     ] + [
       ingredients: %i[
         name

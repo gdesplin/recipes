@@ -9,6 +9,7 @@ class Recipe < ApplicationRecord
   validates :directions, :servings, presence: true
 
   accepts_nested_attributes_for :ingredients, :tags
+  accepts_nested_attributes_for :ingredients_recipes, allow_destroy: true
 
   attr_accessor :servings_change
 
@@ -16,13 +17,13 @@ class Recipe < ApplicationRecord
     nutrients_data ||= {}
     self.ingredients_recipes.each do |ingredient_recipe|
       ingredient_recipe.ingredient.ingredients_nutrients.each do |ingredient_nutrient|
-        amount = ingredient_nutrient.amount
+        amount = ingredient_nutrient.amount * ingredient_recipe.servings / servings
         amount *= (ingredient_recipe.gram_weight * 0.01) if ingredient_recipe.ingredient.data_type == "survey"
         amount = amount.floor(2)
         next unless amount.positive?
         nutrients_data[ingredient_nutrient.nutrient.name] ||= { amount: 0, total_amount: 0, unit_name: ingredient_nutrient.nutrient.unit_name, rank: ingredient_nutrient.nutrient.rank}
         nutrients_data[ingredient_nutrient.nutrient.name][:amount] += amount
-        nutrients_data[ingredient_nutrient.nutrient.name][:total_amount] += amount * ingredient_recipe.servings * servings_change
+        nutrients_data[ingredient_nutrient.nutrient.name][:total_amount] += amount * servings_change
       end
     end
     nutrients_data = nutrients_data.sort_by { |k, v| v[:rank] }

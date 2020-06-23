@@ -3,7 +3,10 @@
     .col-lg-6.mb-3
       .card
         .card-body
-          %h3.card-title= @recipe.title
+          %h3.card-title
+            = @recipe.title
+            - if current_user == @recipe.user
+              = link_to "Edit #{@recipe.model_name.human}", [:edit, @recipe], class: "btn btn-secondary" 
           %h6.card-subtitle= @recipe.short_description
           .list-group.list-group-horizontal
             .list-group-item.flex-fill.w-50.text-right

@@ -1,2 +1,5 @@
-%h1 Recipes#edit
-%p Find me in app/views/recipes/edit.html.haml
+.container{ data: { controller: "recipes"} }
+  %h2.card-title
+    = "Edit #{@recipe_form.recipe.model_name.human}"
+    = link_to "Cancel", @recipe_form.recipe, class: "btn btn-secondary" 
+  = render partial: "form", locals: { recipe_form: @recipe_form }
