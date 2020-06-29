@@ -80,3 +80,21 @@
           = form_with method: "get" do |f|
             = f.submit "Show Less", class: "btn btn-secondary"
 
+  .row
+    .col-6
+      #recipeImages.carousel.slide{ data: { ride: "carousel" } }
+        %ol.carousel-indicators
+          - @recipe.images.size.times do |i|
+            %li{ data: { target: "#recipeImages", "slide-to": i }, class: i.zero? ? "active" : nil }
+        .carousel-inner
+          - @recipe.images.each_with_index do |image, i|
+            - classes = "carousel-item"
+            - classes += " active" if i.zero?
+            %div{ class: classes }
+              = image_tag(image.variant(resize_to_limit: [500, 500]), class: "d-block img-fluid")
+        %a.carousel-control-prev{"data-slide" => "prev", :href => "#recipeImages", :role => "button"}
+          %span.carousel-control-prev-icon{"aria-hidden" => "true"}
+          %span.sr-only Previous
+        %a.carousel-control-next{"data-slide" => "next", :href => "#recipeImages", :role => "button"}
+          %span.carousel-control-next-icon{"aria-hidden" => "true"}
+          %span.sr-only Next

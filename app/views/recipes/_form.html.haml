@@ -40,6 +40,13 @@
       = r.label :private
       = r.check_box :private, class: "form-control"
     .form-group
+      = r.label :images
+      = r.file_field :images, multiple: true
+    .form-group
+      - r.object.images.each do |image|
+        .carousel-item
+          = image_tag(image, class: "img-thumbnail")
+    .form-group
       = r.submit class: "btn btn-primary"
 
 = render partial: "ingredient_modal", locals: { recipe_form: recipe_form }

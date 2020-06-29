@@ -56,10 +56,8 @@ class RecipesController < ApplicationController
     recipe.assign_attributes(safe_params[:recipe_attributes])
     @recipe_form = RecipeIngredientsNutrientsForm.new(recipe: recipe, ingredients: safe_params[:ingredients]).load
     if @recipe_form.save
-      puts "saved"
       redirect_to @recipe_form.recipe
     else
-      puts "not saved?"
       render :edit
     end
   end
@@ -83,6 +81,8 @@ class RecipesController < ApplicationController
           servings
           id
         ],
+      ] + [
+        images: [],
       ],
     ] + [
       ingredients: %i[
