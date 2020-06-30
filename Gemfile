@@ -25,7 +25,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'devise'
 gem 'rubocop', require: false
 gem 'rails_best_practices'
-gem 'bootstrap',  '~>4.3.1'
+# gem 'bootstrap',  '~>4.3.1'
 gem 'font_awesome5_rails'
 gem "haml-rails", "~> 2.0"
 

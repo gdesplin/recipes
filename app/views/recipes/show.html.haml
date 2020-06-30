@@ -81,7 +81,7 @@
             = f.submit "Show Less", class: "btn btn-secondary"
 
   .row
-    .col-6
+    .col-md-6.offset-md-3.mt-3{ style: "max-width: 500px;"}
       #recipeImages.carousel.slide{ data: { ride: "carousel" } }
         %ol.carousel-indicators
           - @recipe.images.size.times do |i|
